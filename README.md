@@ -21,6 +21,3 @@ Once installed, open any terminal or command prompt window and type:
 convert-merks
 ```
 
-1. Drag and drop your file into the terminal.
-2. Type the target format (e.g. `png`, `jpg`, `pdf`).
-3. The converted file will be created right alongside the original!
