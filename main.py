@@ -1,11 +1,26 @@
+#!/usr/bin/env python3
 import os
 import sys
+import subprocess
 from pathlib import Path
-from PIL import Image
+
+# Automatically check and install Pillow if missing, so the user doesn't need to manually download or pip install anything
+try:
+    from PIL import Image
+except ImportError:
+    print("[Info] Pillow not found. Installing Pillow automatically...")
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
+        from PIL import Image
+        print("[Info] Pillow installed successfully! Launching Merks Converter...\n")
+    except Exception as e:
+        print(f"[Error] Failed to automatically install Pillow: {e}")
+        print("Please run: pip install Pillow")
+        sys.exit(1)
 
 def clean_file_path(path_str):
     cleaned = path_str.strip().strip("'\"")
-    cleaned = cleaned.replace("\ ", " ")
+    cleaned = cleaned.replace("\\ ", " ")
     return Path(cleaned)
 
 def convert_file(input_path: Path, target_ext: str):
@@ -44,7 +59,7 @@ def main():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠈⢈⠠⠀⠠⠀⢐⠨⠠⢁⠂⠰⡄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠅⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠤⠂⠐⠀⠄⠠⠐⠀⠌⡀⡂⠅⠂⠌⢀⡗⣕⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠠⠠⠠⠠⠀⠄⡀⡀⢂⢐⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠴⣖⢦⡶⣟⠏⠌⡀⡂⠄⢂⠐⡐⠈⠌⡐⢀⠂⠌⡈⡠⢏⠖⡵⢟⠟⢟⠻⡛⢗⢄⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠠⠀⠅⠂⡂⠅⠌⡐⡀⢂⢂⠐⡈⠄⠀⠀⠀⠀⠀⠀⢀⠠⡑⢅⠢⡡⡑⢅⠅⡇⢐⠐⡈⡐⡀⠂⠅⠡⠐⡐⠈⢠⠪⢊⠔⠌⢌⠢⡑⢅⢑⠌⡂⡢⡑⡐⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠠⠀⠅⠂⡂⠅⠌⡐⡀⢂⢂⠐⡈⠄⠀⠀⠀⠀⠀⠀⢀⠠⡑⢅⠢⡡⡑⢅⠅⡇⢐⠐⡈⡐⡀⠂⠅⠡⠐⡐⠈⢠⠪⢊⠔⠌⢌⠢⡑⢅⠌⡂⡢⡑⡐⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠐⠐⢐⢀⠂⠄⡂⢐⢀⢂⢐⢀⠂⡂⠁⠀⠀⠀⠀⢀⡼⣣⠐⢌⠢⡑⠔⢌⠢⡑⠌⢠⡐⠀⡂⠄⠡⣁⣡⣡⠆⢑⠡⡘⢄⠕⡡⢡⢑⠌⡢⢑⠌⡢⢂⠪⣈⣔⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠈⠐⠀⡂⡐⡀⢂⠐⡀⡂⡡⠀⠀⠀⣠⣟⢾⢝⢄⠡⡑⢌⢊⠢⡑⢌⠂⡢⢍⢫⢒⢕⢍⣖⣗⡧⢐⢐⠅⡪⢐⠅⡊⡢⠢⡑⢌⠢⢑⢌⣢⢾⢵⣳⢽⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⡐⢐⢐⠠⠠⣡⠂⢀⣮⣳⢽⣝⣎⢆⠄⠪⡐⢔⢑⠌⡢⠁⡎⣪⣢⡳⣵⣻⡺⡮⡇⠰⡐⢅⠪⡐⢅⠪⡐⢅⠪⡐⡡⢞⢗⡽⣝⡷⣝⡷⡽⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
