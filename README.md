@@ -1,6 +1,6 @@
 # Merks Converter
 
-<img width="446" height="210" alt="Download6-ezgif com-crop(1)" src="https://github.com/user-attachments/assets/97e12368-45b6-4303-811f-042814090d7b" />"
+<img width="446" height="210" alt="Download6-ezgif com-crop(1)" src="https://github.com/user-attachments/assets/97e12368-45b6-4303-811f-042814090d7b" />
 
 ----------------------------------------------------------------------------------------------
 
